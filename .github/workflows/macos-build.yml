@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ETBackup-macOS
-          path: MAC/dist/ETBackup.app
+          path: MAC/dist/ETBackup.app/
