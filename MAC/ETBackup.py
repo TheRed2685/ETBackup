@@ -9,7 +9,9 @@ import sys
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from datetime import datetime
-import winreg
+if sys.platform == "win32":
+    import winreg
+import subprocess
 
 SETTINGS_FILE = "etbackup_settings.json"
 APP_NAME = "ETBackup"
@@ -20,10 +22,16 @@ class ETBackupApp:
         self.root.title("ETBackup - EggTimer Folder Backup v1.0")
         self.root.geometry("600x580")
 
-        try:
-            self.root.iconbitmap("ETB.ico")
-        except Exception:
-            pass
+        if sys.platform == "win32":
+            try:
+                self.root.iconbitmap("ETB.ico")
+            except Exception:
+                pass
+        elif sys.platform == "darwin":
+            try:
+                self.root.iconphoto(True, tk.PhotoImage(file="ETB.png"))
+            except Exception:
+                pass
 
         self.source_folder = tk.StringVar()
         self.output_folder = tk.StringVar()
@@ -148,7 +156,10 @@ class ETBackupApp:
 
     def open_output_folder(self):
         if self.output_folder.get():
-            os.startfile(self.output_folder.get())
+            if sys.platform == "win32":
+                os.startfile(self.output_folder.get())
+            else:
+                subprocess.call(["open", self.output_folder.get()])
         else:
             messagebox.showinfo("Info", "No backup folder selected.")
 
@@ -160,9 +171,7 @@ class ETBackupApp:
             except tk.TclError:
                 interval = 1800  # fallback to 30 minutes
             time.sleep(interval)
-        while self.running:
-            self.perform_backup()
-            time.sleep(interval)
+        
 
     def perform_backup(self):
         now = datetime.now().strftime("%Y-%m-%d_%H-%M")
@@ -204,9 +213,13 @@ class ETBackupApp:
         self.status_label.config(text=f"Backups Stored: {count} | Space Used: {size_mb:.2f} MB")
 
     def toggle_autorun(self):
+        if sys.platform != "win32":
+            self.log_message("Autorun feature is only available on Windows.")
+            return
+
         exe_path = os.path.abspath(sys.argv[0])
         try:
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, winreg.KEY_ALL_ACCESS) as key:
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_ALL_ACCESS) as key:
                 if self.autorun_enabled.get():
                     winreg.SetValueEx(key, APP_NAME, 0, winreg.REG_SZ, exe_path)
                     self.log_message("Autorun enabled.")
