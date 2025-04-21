@@ -4,18 +4,18 @@
 
 ### Features
 
-- 🕒 **Timed backups** at customizable intervals (30 to 1440 minutes)
-- 💾 **Auto-save settings** — never lose configuration
-- 🌓 **Dark mode toggle**
-- 🔁 **Auto-start with Windows** (optional)
-- 🔧 **Auto-start backups** (optional)
-- 📁 **Instant folder access** from the app
-- 📦 **Zips each backup** into timestamped archives
-- 💬 **Real-time log** of all activity
+-  **Timed backups** at customizable intervals (30 to 1440 minutes)
+-  **Auto-save settings** — never lose configuration
+-  **Dark mode toggle**
+-  **Auto-start with Windows** (optional)
+-  **Auto-start backups** (optional)
+-  **Instant folder access** from the app
+-  **Zips each backup** into timestamped archives
+-  **Real-time log** of all activity
 
 ---
 
-### 📥 Installation
+### Installation
 
 #### Option 1: Download EXE (Windows)
 1. Go to the [Releases tab](https://github.com/TheRed2685/ETBackup/releases)
